@@ -1,55 +1,49 @@
 package br.com.alura.aluraflix.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.com.alura.aluraflix.modelo.Video;
+import br.com.alura.aluraflix.repository.VideoRepo;
 
-public class VideoDto {
+public class UpdateVideoDto {
 
 	@NotNull @NotEmpty @Size(min = 4, max = 120)
 	private String titulo;
 	@NotNull @NotEmpty @Size(min = 2, max = 500)
 	private String description;
-	@NotNull @NotEmpty
-	private String url;
 	
-	public VideoDto() {}
+public UpdateVideoDto() {}
 	
-	public VideoDto(Video video) {
+	public UpdateVideoDto(Video video) {
 		this.titulo = video.getTitulo();
 		this.description = video.getDescription();
-		this.url = video.getUrl();
 	}
-
 
 	public String getTitulo() {
 		return titulo;
 	}
 
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 
 	public String getDescription() {
 		return description;
 	}
 
-
-	public String getUrl() {
-		return url;
-	}
-
-
-	public static List<VideoDto> converter(List<Video> videoList) {
-		return videoList.stream().map(VideoDto::new).collect(Collectors.toList());
-	}
-
-
-	public Video converter() {
-		return new Video(titulo, description, url);
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
-
+	public Video update(UUID id, VideoRepo videoRepo) {
+		Video video = videoRepo.findById(id).get();
+		video.setTitulo(this.titulo);
+		video.setDescription(this.description);
+		
+		return video;
+	}
 }
