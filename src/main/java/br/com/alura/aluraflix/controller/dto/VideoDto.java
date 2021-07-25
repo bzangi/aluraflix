@@ -11,18 +11,19 @@ import br.com.alura.aluraflix.modelo.Video;
 
 public class VideoDto {
 
-	@NotNull @NotEmpty @Size(min = 4, max = 30)
+	@NotNull @NotEmpty @Size(min = 4, max = 50)
 	private String titulo;
 	@NotNull @NotEmpty @Size(min = 2, max = 500)
 	private String description;
 	@NotNull @NotEmpty
 	private String url;
 	
+	public VideoDto() {}
 	
 	public VideoDto(Video video) {
 		this.titulo = video.getTitulo();
 		this.description = video.getDescription();
-		this.url = video.getDescription();
+		this.url = video.getUrl();
 	}
 
 
