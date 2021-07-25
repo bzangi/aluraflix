@@ -49,12 +49,17 @@ public class VideoController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<VideoDto> addVideos(@RequestBody @Valid VideoDto videoDto, UriComponentsBuilder uriBuilder) {
-		Video video = videoDto.converter();
-		videoRepo.save(video);
+	public ResponseEntity<?> addVideos(@RequestBody @Valid VideoForm videoForm, UriComponentsBuilder uriBuilder) {
+		try {
+			Video video = videoForm.converter();
+			videoRepo.save(video);
 
-		URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(video.getId()).toUri();
-		return ResponseEntity.created(uri).body(new VideoDto(video));
+			URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(video.getId()).toUri();
+			return ResponseEntity.created(uri).body(new VideoDto(video));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body("URL informada é inválida, insira um vídeo do youtube");
+		}
+
 	}
 
 	@PutMapping("/{id}")
@@ -68,10 +73,10 @@ public class VideoController {
 		return ResponseEntity.notFound().build();
 
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> removeVideo(@PathVariable UUID id){
+	public ResponseEntity<?> removeVideo(@PathVariable UUID id) {
 		Optional<Video> videoOpt = videoRepo.findById(id);
 		if (videoOpt.isPresent()) {
 			videoRepo.deleteById(id);

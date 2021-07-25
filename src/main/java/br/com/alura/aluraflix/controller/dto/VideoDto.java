@@ -1,8 +1,10 @@
 package br.com.alura.aluraflix.controller.dto;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,6 +13,8 @@ import br.com.alura.aluraflix.modelo.Video;
 
 public class VideoDto {
 
+	@Id
+	private UUID id; //NECESSÁRIO CRIAR DTO PARA METODO POST SEM O ID
 	@NotNull @NotEmpty @Size(min = 4, max = 120)
 	private String titulo;
 	@NotNull @NotEmpty @Size(min = 2, max = 500)
@@ -21,11 +25,16 @@ public class VideoDto {
 	public VideoDto() {}
 	
 	public VideoDto(Video video) {
+		this.id = video.getId();
 		this.titulo = video.getTitulo();
 		this.description = video.getDescription();
 		this.url = video.getUrl();
 	}
 
+	
+	public UUID getId() {
+		return id;
+	}
 
 	public String getTitulo() {
 		return titulo;
