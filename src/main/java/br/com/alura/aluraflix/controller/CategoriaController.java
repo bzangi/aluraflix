@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.alura.aluraflix.controller.dto.CategoriaDto;
 import br.com.alura.aluraflix.controller.dto.CategoriaForm;
+import br.com.alura.aluraflix.controller.dto.CategoriasComVideoDto;
 import br.com.alura.aluraflix.controller.dto.SimpleVideoDto;
 import br.com.alura.aluraflix.modelo.Categoria;
 import br.com.alura.aluraflix.repository.CategoriaRepo;
@@ -46,7 +47,7 @@ public class CategoriaController {
 	@GetMapping
 	public ResponseEntity<?> listCategories() {
 		List<Categoria> categorias = categoriaRepo.findAll();
-		return ResponseEntity.ok().body(CategoriaDto.toCategoriaDtoList(categorias));
+		return ResponseEntity.ok().body(CategoriasComVideoDto.toCategoriaComVideoDtoList(categorias));
 	}
 
 	@GetMapping("/{id}")
