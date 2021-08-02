@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Video {
@@ -13,14 +14,17 @@ public class Video {
 	private String titulo;
 	private String description;
 	private String url;
+	@ManyToOne
+	private Categoria categoria;
 
 	public Video() {
 	}
 
-	public Video(String titulo, String description, String url) {
+	public Video(String titulo, String description, String url, Categoria categoria) {
 		this.titulo = titulo;
 		this.description = description;
 		this.url = url;
+		this.categoria = categoria;
 	}
 
 	public UUID getId() {
@@ -50,5 +54,14 @@ public class Video {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
 
 }
