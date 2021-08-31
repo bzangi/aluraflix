@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Id;
 
+import org.springframework.data.domain.Page;
+
 import br.com.alura.aluraflix.modelo.Video;
 
 public class VideoDto {
@@ -28,6 +30,10 @@ public class VideoDto {
 		this.url = video.getUrl();
 	}
 
+	public static List<VideoDto> toVideoDtoList(Page<Video> videoList) {
+		return videoList.stream().map(VideoDto::new).collect(Collectors.toList());
+	}
+	
 	public static List<VideoDto> toVideoDtoList(List<Video> videoList) {
 		return videoList.stream().map(VideoDto::new).collect(Collectors.toList());
 	}

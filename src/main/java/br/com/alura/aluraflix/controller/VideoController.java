@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.data.domain.*;
 
 import br.com.alura.aluraflix.controller.dto.UpdateVideoDto;
 import br.com.alura.aluraflix.controller.dto.VideoDto;
@@ -40,8 +42,9 @@ public class VideoController {
 	private CategoriaRepo categoriaRepo;
 
 	@GetMapping
-	public ResponseEntity<?> listaVideos() {
-		List<Video> videoList = videoRepo.findAll();
+	public ResponseEntity<?> listaVideos(
+			@PageableDefault(sort = "titulo", size = 5, direction = Sort.Direction.ASC) Pageable pagination) {
+		Page<Video> videoList = videoRepo.findAll(pagination);
 		return ResponseEntity.ok().body(VideoDto.toVideoDtoList(videoList));
 	}
 
@@ -55,19 +58,18 @@ public class VideoController {
 		}
 
 	}
-	
+
 	@GetMapping("search")
-	public ResponseEntity<?> searchVideoByTitle(@RequestParam String titulo){
+	public ResponseEntity<?> searchVideoByTitle(@RequestParam String titulo) {
 		List<Video> videosFiltrados = videoRepo.findByTituloContainingIgnoreCase(titulo);
 		return ResponseEntity.ok().body(VideoDto.toVideoDtoList(videosFiltrados));
 	}
-	
-	
+
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> addVideos(@RequestBody @Valid VideoForm videoForm, UriComponentsBuilder uriBuilder) {
 		try {
-			
+
 			Video video = videoForm.converter(categoriaRepo);
 			videoRepo.save(video);
 

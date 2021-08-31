@@ -3,6 +3,8 @@ package br.com.alura.aluraflix.controller.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import br.com.alura.aluraflix.modelo.Categoria;
 
 public class CategoriasComVideoDto {
@@ -30,6 +32,14 @@ public class CategoriasComVideoDto {
 		}
 		return listDto;
 	}
+	
+//	public static List<CategoriasComVideoDto> toCategoriaComVideoDtoList(Page<Categoria> categorias) {
+//		List<CategoriasComVideoDto> listDto = new ArrayList<>();
+//		for (Categoria categoria : categorias) {
+//			listDto.add(CategoriasComVideoDto.toCategoriaComVideoDto(categoria));
+//		}
+//		return listDto;
+//	}
 
 	public long getId() {
 		return id;
